@@ -1,0 +1,30 @@
+{% load staticfiles i18n %}
+
+<html>
+    <head>
+        {% block meta_tags %}{% endblock %}
+        <title>
+            {% block title %}{% trans "Computer Scheduler" %}{% endblock %}
+        </title>
+        {% block stylesheets %}
+            {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'schedule/style.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'schedule/jquery.toast.min.css' %}"/>
+        <script src="https://use.fontawesome.com/dc6af08df9.js"></script>
+        {% endblock %}
+        {% block javascript %}
+        {% endblock %}
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body>
+        <header>
+        </header>
+        <div id="main" role="main">
+            <div class="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

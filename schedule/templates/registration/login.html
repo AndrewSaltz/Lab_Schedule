@@ -1,0 +1,27 @@
+{% extends "schedule/__base.html" %} {% block content %} {% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+
+<div class="container" id="login-box">
+    <h2>Hey there! You have log in to use the schedule</h2>
+
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </div>
+        <div>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </div>
+
+        <div>
+            <input type="submit" value="login" />
+        </div>
+    </form>
+</div>
+{% endblock %}

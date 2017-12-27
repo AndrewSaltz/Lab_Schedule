@@ -1,0 +1,171 @@
+table,
+th,
+td {
+    border: 1px solid red;
+}
+
+.free {
+    background-color: #2ECC71;
+}
+
+.reserved {
+    background-color: #cc2e89
+}
+
+.reserved .cart {
+    display: none;
+}
+
+.btn {
+    min-width: 50px;
+    max-width: 70px;
+    overflow: hidden;
+    height: 50px;
+    text-align: center;
+    padding-left: 10px;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+    margin: 3px;
+}
+
+.btn:hover {
+    border-style: solid;
+    border-color: #FFFF00;
+}
+
+.tchr {
+    display: none;
+}
+
+.reserved .tchr {
+    display: inline-block;
+    text-align: left;
+}
+
+.today {
+    background-color: #d6ebf2;
+}
+
+h1 {
+    text-align: center;
+}
+
+#dashboard-free {
+    color: green;
+    font-size: 30px;
+    padding-right: 5px;
+}
+
+#dashboard-reserved {
+    color: red;
+    font-size: 30px;
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.btn-lg {
+    max-width: 160px;
+}
+
+#control {
+    text-align: center;
+    padding: 20px;
+    border: solid;
+    background-color: cornsilk;
+    margin-bottom: 10px;
+}
+
+.btn-circle {
+    border-radius: 20px!important;
+    background-color: darkorchid;
+    color: white;
+    font-size: 20px!important;
+    max-width: 200px;
+}
+
+#sort {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#login-box {
+    text-align: center;
+}
+
+.reserved-home {
+    padding: 10px;
+    background-color: #2ECC71;
+    color: white;
+}
+
+
+/* https://stackoverflow.com/questions/1964839/how-can-i-create-a-please-wait-loading-animation-using-jquery */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba( 255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+}
+
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+
+body.loading {
+    overflow: hidden;
+}
+
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+
+body.loading .modal {
+    display: block;
+}
+
+@media only screen and (min-device-width: 310px) and (max-device-width: 766px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        text-align: center;
+        white-space: nowrap;
+        border-spacing: 10px;
+        position: relative;
+    }
+    tr {
+        height: 50vh;
+        max-height: 100%;
+        max-width: 100% !important;
+    }
+    .reserved {
+        width: 75px;
+        height: 75px;
+        font-size: 16px;
+        margin: 5px;
+    }
+    .free {
+        width: 75px;
+        height: 75px;
+        font-size: 16px;
+        margin: 5px;
+    }
+    table {
+        max-height: 100%;
+    }
+    #by-cart tr,
+    #by-cart td,
+    #by-cart,
+    table {
+        height: auto;
+    }
+}

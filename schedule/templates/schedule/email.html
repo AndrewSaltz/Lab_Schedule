@@ -1,0 +1,39 @@
+{% extends "schedule/__base.html" %} {% load static %} {% block content %}
+<header>
+    <h1 style="text-align: center">Daily Report {% now "I F j" %}</h1>
+</header>
+
+<body>
+    {% if warning %}
+    <div class="warning">
+        <h2>{{warning}}</h2>
+    </div>
+    {% endif %}
+    <table>
+        <thead>
+            <th>Teacher</th>
+            <th>Cart</th>
+            <th>Period</th>
+        </thead>
+        {% for r in reservations %}
+         <strong><tr> {% if r.is_reserved == True %}
+           <td style="color: green;">{{r.teacher}} </td>
+            <td style="color: green;">Cart {{r.cart}}</td>
+            <td style="color: green;">Period {{r.period}}</td>
+        </tr></strong>
+        {% else %}
+        <tr>
+            <td>{{r.teacher}}</td>
+            <td>Cart {{r.cart}}</td>
+            <td>Period {{r.period}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+    <a href="{% url 'dashboard' %}">
+        <h2>Click here for more</h2>
+    </a>
+
+    <h2>Remember: You rock!</h2>
+</body>
+{% endblock %}

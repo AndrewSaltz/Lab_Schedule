@@ -1,0 +1,108 @@
+{% extends "schedule/__base.html" %} {% block javascript %} {% load static %}
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'schedule/jquery.toast.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'schedule/create_week.js' %}"></script>
+<script type="text/javascript" src="{% static 'schedule/dashboard.js' %}"></script>
+<script type="text/javascript" src="{% static 'schedule/create_month.js' %}"></script>
+<script type="text/javascript" src="{% static 'schedule/create_twelve.js' %}"></script>
+<script type="text/javascript" src="{% static 'schedule/delete_all.js' %}"></script>
+{% endblock %} {% block content %} {% load schedule_tags %}
+<header>
+    <h1>Administrative Dashboard</h1>
+</header>
+
+<body>
+    <div id="sort" class="container">
+        <button class="btn btn-circle" id="day_view">Day View</button>
+        <button class="btn btn-circle" id="cart_view">By Cart</button>
+        <a href="/"><button class="btn btn-primary" style="float:right; max-width: 100%;">Go Back</button></a>
+        <a href="/admin"><button class="btn btn-secondary" style="float:right; max-width: 100%;">Admin Interface</button></a>
+    </div>
+    <div id="control" class="container">
+        <!--# We want scripts here to add a week, add a month, add 12 weeks-->
+        <button class="btn btn-primary btn-lg" id="create_week" type="button">Create Week</button>
+        <button class="btn btn-primary btn-lg" id="create_month" type="button">Create Month</button>
+        <button class="btn btn-lg btn-primary" id="create_twelve" type="button">Create 12 Weeks</button>
+        <button class="btn btn-warning btn-lg" id="delete-mode" type="button">Delete Slots</button>
+        <button class="btn btn-danger btn-lg" id="delete_all" type="button">Delete All</button>
+    </div>
+
+    <div class="row" id="days" style="display:none;">
+        <div class="col-xs-6">
+            <h2 class="sub-header">{{today}}</h2>
+            <div class="table-responsive">
+                <table class="table" style="width: 100%;">
+                    <tbody>
+                        {% for p in periods %}
+                        <tr class="period">
+                            <td>
+                                <h3>Period {{p}}</h3>
+                            </td>
+                            <td>
+                                {% for t in this_day %} {% if t.period == p %} {% if t.is_reserved == True %}
+                                <i id="dashboard-reserved" class="fa fa-check-circle fa-lg"></i>
+                                <h5>Cart {{t.cart}} for {{t.teacher}}</h5>
+                                {% else %}
+                                <span id="dashboard-free"><i class="fa fa-circle fa-lg"></i><h5>{{t.cart}}</h5></span> {% endif %} {% endif %} {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <h2 class="sub-header">{{tomorrow}}</h2>
+            <div class="table-responsive">
+                <table class="table" style="width: 100%;">
+                    <tbody>
+                        {% for p in periods %}
+                        <tr class="period">
+                            <td>
+                                <h3>Period {{p}}</h3>
+                            </td>
+                            <td>
+                                {% for n in next_day %} {% if n.period == p %} {% if n.is_reserved == True %}
+                                <i id="dashboard-reserved" class="fa fa-check-circle fa-lg"></i>
+                                <h5>Cart {{n.cart}} for {{n.teacher}}</h5>
+                                {% else %}
+                                <span id="dashboard-free"><i class="fa fa-circle fa-lg"></i><h5>{{n.cart}}</h5></span> {% endif %} {% endif %} {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row container" id="by-cart" style="display:block;">
+        <h3>{% now "D F j" %}</h3>
+        <table class="table">
+            <thead>
+                <td>
+                    <h3>Cart</h3>
+                </td>
+                <td>
+                    <h3>Schedule</h3>
+                </td>
+            </thead>
+            <tbody>
+                {% for cart in cart_list %}
+                <tr>
+                    <td>
+                        <h4>{{cart}}</h4>
+                    </td>
+                    <td>
+                        {% for t in this_day %} {% if t.cart == cart %} {% if t.is_reserved == False %}
+                        <i id="dashboard-free" class="fa fa-check-circle fa-lg"><h4>{{t.period}}</h4></i> {% endif %} {% if t.cart == cart and t.is_reserved == True %}
+                        <i id="dashboard-reserved" class="fa fa-circle fa-lg"><h5>{{t.period}} {{t.teacher}}</h5></i> {% endif %} {% endif %}{% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal"></div>
+</body>
+{% endblock %}

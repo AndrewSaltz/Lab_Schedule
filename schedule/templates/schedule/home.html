@@ -1,0 +1,182 @@
+{% extends "schedule/__base.html" %} {% block javascript %} {% load static %}
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'schedule/jquery.toast.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'schedule/main.js' %}"></script>
+{% endblock %} {% block content %} {% load schedule_tags %}
+<html>
+<header class="row" style="text-align:center">
+    <h4> Paul Robeson High School Computer Cart Sign Out</h4>
+    <a style="float:left; font-size:15px" href="{% url 'logout' %}">
+        <h5>Log Out</h5>
+    </a>
+    {% if user.is_staff %}
+    <a style="float: right; font-size: 20x" href="{% url 'dashboard' %}">Your Dashboard</a> {% endif %} {% with view.kwargs.adjuster as the_day %}
+    <a href="{% url 'home' the_day|back_day %}"><i class="fa fa-arrow-left fa-3x" style="margin-right:10px;"></i></a>
+    <h1 style="display:inline-block">Week of {{monday}}</h1>
+    <a href="{% url 'home' the_day|add:" 1 " %}"><i class="fa fa-arrow-right fa-3x" style="margin-left:10px"></i></a>
+    <div style="clear: left"></div>
+    {% endwith %}
+    <div hidden id="username" >{{ username }}</div>
+    <div class="container" style="margin-bottom: 5px;">
+        <div class="btn btn-circle one" id="toggle">My Reservations</div>
+    </div>
+</header>
+<table class="table-responsive" style="width:100%;" id="main_view">
+    <thread>
+        <tr class="day_label">
+            <td>Monday</td>
+            {% for p in periods %}
+            <td class="slots">
+                Period {{p}} <br>{% for x in this_week %} {% with d=x.day|date:"w" %} {% if d == '1' and x.period == p %} {% if x.is_reserved == True %}
+                <button id="{{x.pk}}" type="submit" class="reserved btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr" style="text-align:left">{{x.teacher}}</div></button> {% else %}
+                <button id="{{x.pk}}" type="submit" user="{{request.user }}" class="free btn">{% csrf_token %}
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr">{{x.teacher}}</div></button> {% endif %} {% endif %} {% endwith %} {% endfor %}
+            </td>
+            {% endfor %}
+        </tr>
+        <tr class="day_label">
+            <td>Tuesday</td>
+            {% for p in periods %}
+            <td class="slots">
+                Period {{p}}<br> {% for x in this_week %} {% with d=x.day|date:"w" %} {% if d == '2' and x.period == p %} {% if x.is_reserved == True %}
+                <button id="{{x.pk}}" type="submit" class="reserved btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr" style="text-align:left">{{x.teacher}}</div></button> {% else %}
+                <button id="{{x.pk}}" type="submit" user="{{request.user }}" class="free btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr">{{x.teacher}}</div></button> {% endif %} {% endif %} {% endwith %} {% endfor %}
+            </td>
+            {% endfor %}
+        </tr>
+        <tr class="day_label">
+            <td>Wednesday</td>
+            {% for p in periods %}
+            <td class="slots">
+                Period {{p}} <br> {% for x in this_week %} {% with d=x.day|date:"w" %} {% if d == '3' and x.period == p %} {% if x.is_reserved == True %}
+                <button id="{{x.pk}}" type="submit" class="reserved btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr" style="text-align:left">{{x.teacher}}</div></button> {% else %}
+                <button id="{{x.pk}}" type="submit" user="{{request.user }}" class="free btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr">{{x.teacher}}</div></button> {% endif %} {% endif %} {% endwith %} {% endfor %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% if the_day == 'Thursday' %}
+        <tr class="today day_label">
+            {% else %}
+            <tr class="day_label">
+                {% endif %}
+                <td>Thursday</td>
+                {% for p in periods %}
+                <td class="slots">
+                    Period {{p}} <br> {% for x in this_week %} {% with d=x.day|date:"w" %} {% if d == '4' and x.period == p %} {% if x.is_reserved == True %}
+                    <button id="{{x.pk}}" type="submit" class="reserved btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr" style="text-align:left">{{x.teacher}}</div></button> {% else %}
+                    <button id="{{x.pk}}" type="submit" user="{{request.user }}" class="free btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr">{{x.teacher}}</div></button> {% endif %} {% endif %} {% endwith %} {% endfor %}
+                </td>
+                {% endfor %}
+            </tr>
+            <tr class="day_label">
+                <td>Friday</td>
+                <!--Using Friday as the explainer. This is Friday-->
+                {% for p in periods %}
+                <!--Make a new cell for each period-->
+                <td class="slots">
+                    Period {{p}} <br> {% for x in this_week %}
+                    <!-- Get everything  -->
+                    {% with d=x.day|date:"w" %} {% if d == '5' and x.period == p %}
+                    <!-- Get Friday -->
+                    {% if x.is_reserved == True %}
+                    <!--Is it reserved?-->
+                    <button id="{{x.pk}}" type="submit" class="reserved btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr" style="text-align:left">{{x.teacher}}</div></button> {% else %}
+                    <button id="{{x.pk}}" type="submit" user="{{request.user }}" class="free btn">
+                                <span class="cart">{{x.cart}}</span>
+                                <div class="tchr">{{x.teacher}}</div></button> {% endif %}
+                    <!--End Reservation If-->
+                    {% endif %}
+                    <!-- End Friday -->
+                    {% endwith %} {% endfor %}
+                    <!--End loop-->
+                </td>
+                {% endfor %}
+                <!--New Period (or end periods)-->
+            </tr>
+    </thread>
+</table>
+
+<div class="row container-fluid" style="display:none;" id="my_view">
+    <h2>My Reservations</h2>
+    <table class="table-responsive">
+        <thead></thead>
+        <tbody>
+            <tr>
+                <td>
+                    <h4>Monday</h4>
+                </td>
+                <td>{% for me in my_reservation %} {% with f=me.day|date:"w" %} {% if f == '1' %}
+                    <div class="reserved-home">
+                        <h4>Cart {{me.cart}} Period {{me.period}}</h4>
+                    </div>
+                    {% endif %} {% endwith %} {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Tuesday</h4>
+                </td>
+                <td>{% for me in my_reservation %} {% with f=me.day|date:"w" %} {% if f == '2' %}
+                    <div class="reserved-home">
+                        <h4>Cart {{me.cart}} Period {{me.period}}</h4>
+                    </div>
+                    {% endif %} {% endwith %} {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Wednesday</h4>
+                </td>
+                <td>{% for me in my_reservation %} {% with f=me.day|date:"w" %} {% if f == '3' %}
+                    <div class="reserved-home">
+                        <h4>Cart {{me.cart}} Period {{me.period}}</h4>
+                    </div>
+                    {% endif %} {% endwith %} {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Thursday</h4>
+                </td>
+                <td>{% for me in my_reservation %} {% with f=me.day|date:"w" %} {% if f == '4' %}
+                    <div class="reserved-home">
+                        <h4>Cart {{me.cart}} Period {{me.period}}</h4>
+                    </div>
+                    {% endif %} {% endwith %} {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Friday</h4>
+                </td>
+                <td>{% for me in my_reservation %} {% with f=me.day|date:"w" %} {% if f == '5' %}
+
+                    <div class="reserved-home">
+                        <h4>Cart {{me.cart}} Period {{me.period}}</h4>
+                    </div>
+                    {% endif %} {% endwith %} {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+</html>
